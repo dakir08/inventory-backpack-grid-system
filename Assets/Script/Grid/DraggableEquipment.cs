@@ -6,12 +6,14 @@ public class DraggableEquipment : MonoBehaviour, IBeginDragHandler, IDragHandler
     private RectTransform rectTransform;
     private Canvas canvas;
     private CanvasGroup canvasGroup;
+    private EquipmentGrid equipmentGrid;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        canvas = FindObjectOfType<Canvas>();
+        canvas = GameObject.FindGameObjectWithTag("InventoryGridUI").GetComponent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
+        equipmentGrid = GetComponent<EquipmentGrid>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -24,13 +26,12 @@ public class DraggableEquipment : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(
-    FindObjectOfType<InventoryGrid>().GetComponent<RectTransform>(),
-    eventData.position,
-    eventData.pressEventCamera))
+        InventorySlot overSlot = FindSlotUnderEquipment(eventData);
+
+        if (overSlot != null)
         {
-            // The equipment is currently over the inventory grid
-            Debug.Log("Equipment is over the inventory");
+            bool available = GridManager.Instance.AreAllNodesAvailable(overSlot.node, equipmentGrid.gridWidth, equipmentGrid.gridHeight);
+            Debug.Log("available " + available);
         }
     }
 
@@ -38,6 +39,22 @@ public class DraggableEquipment : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
+    }
+
+    private InventorySlot FindSlotUnderEquipment(PointerEventData eventData)
+    {
+        InventoryGrid inventoryGrid = FindObjectOfType<InventoryGrid>(); // Cache this if performance is an issue
+        foreach (InventorySlot slot in inventoryGrid.GetComponentsInChildren<InventorySlot>())
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(
+                slot.GetComponent<RectTransform>(),
+                eventData.position,
+                eventData.pressEventCamera))
+            {
+                return slot;
+            }
+        }
+        return null;
     }
 
 }

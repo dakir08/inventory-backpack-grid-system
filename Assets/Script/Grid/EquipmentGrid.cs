@@ -18,11 +18,6 @@ public class EquipmentGrid : MonoBehaviour
         float size = GridManager.Instance.cellSize;
         float slotSpacing = GridManager.Instance.slotSpacing;
 
-
-        GridLayoutGroup gridLayout = gameObject.GetComponent<GridLayoutGroup>();
-        gridLayout.cellSize = new Vector2(size, size); // Adjust cell size as needed
-        gridLayout.spacing = new Vector2(slotSpacing, slotSpacing);
-
         for (int y = 0; y < gridHeight; y++)
         {
             for (int x = 0; x < gridWidth; x++)

@@ -109,6 +109,34 @@ public class GridManager : Singleton<GridManager>
         }
     }
 
+
+    public bool AreAllNodesAvailable(Node startNode, int equipmentWidth, int equipmentHeight)
+    {
+        if (startNode == null) return false;
+
+        int startX = startNode.position.x;
+        int startY = startNode.position.y;
+
+        if (startX + equipmentWidth + 1 > gridWidth || startY + equipmentHeight + 1 > gridHeight)
+        {
+            return false;
+        }
+
+        for (int x = startX; x < startX + equipmentWidth; x++)
+        {
+            for (int y = startY; y < startY + equipmentHeight; y++)
+            {
+                if (!IsWithinGrid(new Vector2Int(x, y)) || !inventoryGrid[x, y].isAvailable)
+                {
+                    return false; // If the node is outside the grid or not available
+                }
+            }
+        }
+
+        return true; // All nodes in the specified area are available
+    }
+
+
     private void CreateDebugGrid()
     {
         debugInventoryGrid = new Node[gridWidth, gridHeight];
