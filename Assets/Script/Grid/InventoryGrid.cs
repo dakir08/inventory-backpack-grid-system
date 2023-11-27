@@ -11,10 +11,6 @@ public class InventoryGrid : MonoBehaviour
     public int cellSize = 50;
     public float slotSpacing = 5f;
 
-    public Vector2Int availableSpaceStart = new Vector2Int(0, 0); // Start position
-    public int availableSpaceWidth = 2;
-    public int availableSpaceHeight = 2;
-
 
     private void Start()
     {
@@ -39,23 +35,15 @@ public class InventoryGrid : MonoBehaviour
         gridLayout.cellSize = new Vector2(size, size); // Adjust cell size as needed
         gridLayout.spacing = new Vector2(slotSpacing, slotSpacing);
 
-
-
-        Debug.Log(width + " " + height);
-
-
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
                 GameObject slotObj = Instantiate(slotPrefab, transform);
-                // InventorySlot slot = slotObj.GetComponent<InventorySlot>();
-                // slot.Initialize(new Vector2Int(x, y));
+                InventorySlot slot = slotObj.GetComponent<InventorySlot>();
+                slot.Initialize(GridManager.Instance.GetNode(x, y));
             }
         }
-
-
-
 
         RectTransform rectTransform = GetComponent<RectTransform>();
         rectTransform.sizeDelta = new Vector2(

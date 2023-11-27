@@ -11,9 +11,15 @@ public class GridManager : Singleton<GridManager>
     public int availableSpaceWidth = 2;
     public int availableSpaceHeight = 2;
 
+    protected override void Awake()
+    {
+        base.Awake();
+
+        CreateGrid();
+    }
+
     private void Start()
     {
-        CreateGrid();
         InitAvailableSpace();
     }
 
@@ -49,6 +55,7 @@ public class GridManager : Singleton<GridManager>
         {
             return inventoryGrid[x, y];
         }
+        Debug.Log("No node from this world position");
         return null; // Return null if the position is outside the grid
     }
 
@@ -64,7 +71,7 @@ public class GridManager : Singleton<GridManager>
 
         foreach (var offset in neighborOffsets)
         {
-            Vector2Int neighborPosition = node.Position + offset;
+            Vector2Int neighborPosition = node.position + offset;
             if (IsWithinGrid(neighborPosition) && inventoryGrid[neighborPosition.x, neighborPosition.y].isAvailable)
             {
                 return true;

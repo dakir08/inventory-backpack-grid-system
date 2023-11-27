@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9097943663379071893}
   - component: {fileID: 3030122505562300171}
   - component: {fileID: -4553397126436561025}
+  - component: {fileID: 692889328050026543}
   m_Layer: 5
   m_Name: Backpack Grid Element
   m_TagString: Untagged
@@ -90,8 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e74b52e1e37a3444958ff140b81d512, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position: {x: 0, y: 0}
-  isAvailable: 0
 --- !u!114 &-4553397126436561025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,3 +120,15 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!225 &692889328050026543
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097943663379071895}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
