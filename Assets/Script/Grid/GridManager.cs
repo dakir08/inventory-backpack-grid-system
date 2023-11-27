@@ -5,11 +5,16 @@ public class GridManager : Singleton<GridManager>
     public int gridWidth = 10;
     public int gridHeight = 10;
     public float cellSize = 50f;
+    public float slotSpacing = 5f;
     public Node[,] inventoryGrid;
+    public Node[,] debugInventoryGrid;
+    public Vector3 originPosition = Vector3.zero; // Default to (0, 0, 0)
 
     public Vector2Int availableSpaceStart = new Vector2Int(0, 0); // Start position
     public int availableSpaceWidth = 2;
     public int availableSpaceHeight = 2;
+
+    // New
 
     protected override void Awake()
     {
@@ -102,5 +107,45 @@ public class GridManager : Singleton<GridManager>
                 }
             }
         }
+    }
+
+    private void CreateDebugGrid()
+    {
+        debugInventoryGrid = new Node[gridWidth, gridHeight];
+
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int y = 0; y < gridHeight; y++)
+            {
+                debugInventoryGrid[x, y] = new Node(new Vector2Int(x, y));
+            }
+        }
+    }
+
+    // Debug
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.blue;
+        float originSize = 20f; // Size of the origin marker
+        Gizmos.DrawCube(originPosition, new Vector3(originSize, originSize, originSize));
+
+        // CreateDebugGrid();
+
+        // Gizmos.color = Color.gray;
+        // for (int x = 0; x < gridWidth; x++)
+        // {
+        //     for (int y = 0; y < gridHeight; y++)
+        //     {
+        //         var node = debugInventoryGrid[x, y];
+        //         var position = new Vector3(x * cellSize, y * cellSize, 0);
+
+        //         // Change color if node is occupied
+        //         Gizmos.color = node != null && node.isAvailable ? Color.red : Color.gray;
+
+        //         // Draw a small cube at each node position
+        //         Gizmos.DrawCube(position, new Vector3(cellSize, cellSize, 0.1f));
+        //     }
+        // }
     }
 }

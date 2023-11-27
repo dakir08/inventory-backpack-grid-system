@@ -18,12 +18,20 @@ public class DraggableEquipment : MonoBehaviour, IBeginDragHandler, IDragHandler
     {
         canvasGroup.alpha = .7f;
         canvasGroup.blocksRaycasts = false;
-        // Logic when dragging starts (if needed)
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+
+        if (RectTransformUtility.RectangleContainsScreenPoint(
+    FindObjectOfType<InventoryGrid>().GetComponent<RectTransform>(),
+    eventData.position,
+    eventData.pressEventCamera))
+        {
+            // The equipment is currently over the inventory grid
+            Debug.Log("Equipment is over the inventory");
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -31,4 +39,5 @@ public class DraggableEquipment : MonoBehaviour, IBeginDragHandler, IDragHandler
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
     }
+
 }

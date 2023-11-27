@@ -36,11 +36,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &9097943663379071892
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 3030122505562300171}
           m_TargetAssemblyTypeName: InventorySlot, Assembly-CSharp
-          m_MethodName: OnPointerClick
+          m_MethodName: MakeAvailable
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

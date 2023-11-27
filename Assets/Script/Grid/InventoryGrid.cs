@@ -1,39 +1,35 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class InventoryGrid : MonoBehaviour
 {
     public GameObject slotPrefab;
-    [Tooltip("If enable, gridmanager will override gridWidth, gridHeight, and cellSize")]
-    public bool useInventoryGrid;
-    public int gridWidth = 5;
-    public int gridHeight = 4;
-    public int cellSize = 50;
-    public float slotSpacing = 5f;
 
 
     private void Start()
     {
         GenerateGrid();
-        // InitAvailableSpace();
     }
 
     void GenerateGrid()
     {
-        float width = gridWidth;
-        float height = gridHeight;
-        float size = cellSize;
+        float width = GridManager.Instance.gridWidth;
+        float height = GridManager.Instance.gridHeight;
+        float size = GridManager.Instance.cellSize;
+        float slotSpacing = GridManager.Instance.slotSpacing;
 
-        if (useInventoryGrid)
-        {
-            width = GridManager.Instance.gridWidth;
-            height = GridManager.Instance.gridHeight;
-            size = GridManager.Instance.cellSize;
-        }
+        float rectWidth = width * size + slotSpacing * (width - 1);
+        float rectHeight = height * size + slotSpacing * (height - 1);
 
-        GridLayoutGroup gridLayout = gameObject.GetComponent<GridLayoutGroup>();
-        gridLayout.cellSize = new Vector2(size, size); // Adjust cell size as needed
-        gridLayout.spacing = new Vector2(slotSpacing, slotSpacing);
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(rectWidth, rectHeight); // Adjust the panel size
+
+        rectTransform.position = new Vector3(
+            GridManager.Instance.originPosition.x,
+            GridManager.Instance.originPosition.y + rectHeight,
+            GridManager.Instance.originPosition.z
+        );
 
         for (int y = 0; y < height; y++)
         {
@@ -42,13 +38,29 @@ public class InventoryGrid : MonoBehaviour
                 GameObject slotObj = Instantiate(slotPrefab, transform);
                 InventorySlot slot = slotObj.GetComponent<InventorySlot>();
                 slot.Initialize(GridManager.Instance.GetNode(x, y));
+
+                RectTransform slotRectTransform = slotObj.GetComponent<RectTransform>();
+
+                // Calculate the position for each slot
+                float slotPosX = x * size;
+                float slotPosY = y * size;
+
+                // Calculate cellSpacing
+                if (x != 0)
+                {
+                    slotPosX += slotSpacing * x;
+                }
+
+                if (y != 0)
+                {
+                    slotPosY += slotSpacing * y;
+                }
+
+
+                // Set the position and size of the slot
+                slotRectTransform.anchoredPosition = new Vector2(slotPosX, slotPosY);
             }
         }
 
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        rectTransform.sizeDelta = new Vector2(
-            width * size + slotSpacing * (width - 1),
-            height * size + slotSpacing * (height - 1)
-            ); // Adjust the panel size
     }
 }

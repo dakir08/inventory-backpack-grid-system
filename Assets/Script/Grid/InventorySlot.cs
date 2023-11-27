@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public Node node;
     private CanvasGroup canvasGroup;
@@ -23,7 +24,7 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
-    public void OnPointerClick()
+    public void MakeAvailable()
     {
         if (!GridManager.Instance.HasAvailableNeighbor(node))
         {
@@ -32,5 +33,14 @@ public class InventorySlot : MonoBehaviour
 
         node.SetAvailable(true);
         canvasGroup.alpha = 1f;
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("ONDROP");
+        if (eventData.pointerDrag != null)
+        {
+            Debug.Log($"Node Position: {node.position}");
+        }
     }
 }
